@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp
+        image: nginx
+        ports:
+        - containerPort: 443
+        volumeMounts:
+        - name: tls-volume
+          mountPath: /etc/nginx/tls
+          readOnly: true
+      volumes:
+      - name: tls-volume
+        secret:
+          secretName: my-tls-secret
